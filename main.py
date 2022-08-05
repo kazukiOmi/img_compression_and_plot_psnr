@@ -111,7 +111,8 @@ def bmp_to_png(img_path):
     for i in q_list:
         start_time = time.time()
         for j in range(100):
-            org_img.save("./img/Lenna_q" + str(i) + ".png", quality=i)
+            org_img.save(img_path.split(".")
+                         [0]+"_q" + str(i) + ".png", quality=i)
         end_time = time.time()
         print(f"quality:{i}, time:{end_time-start_time}")
         # cv2.imwrite("img/Lenna_q"+str(i)+".png",
