@@ -5,6 +5,7 @@ from PIL import Image
 import os.path as osp
 import matplotlib.pyplot as plt
 import argparse
+import time
 
 
 def psnr(img_1, img_2, data_range=255):
@@ -103,19 +104,23 @@ def bmp_to_webp(img_path):
     return bpp_list, psnr_list
 
 
-def bmp_to_png():
-    org_img = Image.open("./img/Lenna.bmp")
+def bmp_to_png(img_path):
+    org_img = Image.open(img_path)
 
-    q_list = [0, 3, 5, 7, 9]
+    q_list = [i for i in range(10)]
     for i in q_list:
-        org_img.save("./img/Lenna_q" + str(i) + ".png", quality=i)
+        start_time = time.time()
+        for j in range(100):
+            org_img.save("./img/Lenna_q" + str(i) + ".png", quality=i)
+        end_time = time.time()
+        print(f"quality:{i}, time:{end_time-start_time}")
         # cv2.imwrite("img/Lenna_q"+str(i)+".png",
         #             imgEncodeDecode("./img/Lenna.bmp", 3, i, ext="png"))
 
-    org_img = cv2.imread("./img/Lenna.bmp")
-    for i in q_list:
-        cmp_img = cv2.imread("./img/Lenna_q" + str(i) + ".png")
-        print(psnr(org_img, cmp_img))
+    # org_img = cv2.imread("./img/Lenna.bmp")
+    # for i in q_list:
+    #     cmp_img = cv2.imread("./img/Lenna_q" + str(i) + ".png")
+    #     print(psnr(org_img, cmp_img))
 
 
 def plot_psnr(org_img_path):
@@ -141,3 +146,4 @@ def get_arguments():
 
 args = get_arguments()
 plot_psnr(args.img_path)
+# bmp_to_png(args.img_path)
